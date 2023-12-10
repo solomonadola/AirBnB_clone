@@ -44,9 +44,9 @@ class BaseModel:
             self.updated_at = datetime.now()
 
     def __str__(self):
-        """string repr of obj"""
-        return '[{}] ({}) {}'.format(self.__class__.__name__,
-                                     self.id, self.__dict__)
+        """Return the print/str representation of the BaseModel instance."""
+        clname = self.__class__.__name__
+        return "[{}] ({}) {}".format(clname, self.id, self.__dict__)
 
     def save(self):
         """updates the public instance attribute"""
