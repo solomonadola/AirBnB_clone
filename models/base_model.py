@@ -22,7 +22,9 @@ class BaseModel:
 
     Methods:
         save(): Updates the updated_at attribute with the current datetime.
-        to_dict(): Returns a dictionary representation of the instance, with ISO-formatted strings for datetime attributes and a __class__ key with the class name.
+        to_dict(): Returns a dictionary representation of the instance,
+        with ISO-formatted strings for datetime attributes and
+        a __class__ key with the class name.
     """
 
     def __init__(self, *args, **kwargs):
