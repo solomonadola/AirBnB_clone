@@ -1,5 +1,8 @@
-""" this module is just to test pycodestyle
-the rest will follow after this one"""
+#!/usr/bin/python3
+"""
+this module is just to test pycodestyle
+the rest will follow after this one
+"""
 
 
 def pycodestyle():
