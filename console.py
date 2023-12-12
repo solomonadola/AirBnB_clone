@@ -120,7 +120,8 @@ class HBNBCommand(cmd.Cmd):
         parts = line.split('.')
         if len(parts) == 2 and parts[1] == 'all()':
             class_name = parts[0]
-            instances = [str(obj) for key, obj in storage.all().items() if class_name in key]
+            instances = [str(obj) for key, obj in storage.all().items()
+                         if class_name in key]
             print(instances)
         else:
             super().default(line)
