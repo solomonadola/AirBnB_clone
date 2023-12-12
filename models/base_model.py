@@ -27,7 +27,7 @@ class BaseModel:
         a __class__ key with the class name.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         """
         initializes a new instance of the BaseModel class.
         """
@@ -61,6 +61,6 @@ class BaseModel:
         """
         dic = self.__dict__.copy()
         dic['__class__'] = self.__class__.__name__
-        dic['updated_at'] = self.updated_at.isoformat()
         dic['created_at'] = self.created_at.isoformat()
+        dic['updated_at'] = self.updated_at.isoformat()
         return dic
