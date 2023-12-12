@@ -42,24 +42,6 @@ class HBNBCommand(cmd.Cmd):
             new_instance.save()
             print(new_instance.id)
 
-    def do_destroy(self, arg):
-        """Destroy an instance based on the class name and id"""
-        args = arg.split()
-        if not args:
-            print("** class name missing **")
-        elif args[0] not in self.classes:
-            print("** class doesn't exist **")
-        elif len(args) < 2:
-            print("** instance id missing **")
-        else:
-            key = args[0] + "." + args[1]
-            all_objects = storage.all()
-            if key in all_objects:
-                del all_objects[key]
-                storage.save()
-            else:
-                print("** no instance found **")
-
     def do_all(self, arg):
         """Print all string representations of instances"""
         args = arg.split()
@@ -128,6 +110,24 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
+    def do_destroy(self, arg):
+        """Destroy an instance based on the class name and id"""
+        args = arg.split()
+        if not args:
+            print("** class name missing **")
+        elif args[0] not in self.classes:
+            print("** class doesn't exist **")
+        elif len(args) < 2:
+            print("** instance id missing **")
+        else:
+            key = args[0] + "." + args[1]
+            all_objects = storage.all()
+            if key in all_objects:
+                del all_objects[key]
+                storage.save()
+            else:
+                print("** no instance found **")
+
     def default(self, line):
         """Handle custom commands"""
         parts = line.split('.')
@@ -149,6 +149,16 @@ class HBNBCommand(cmd.Cmd):
                 all_objects = storage.all()
                 if key in all_objects:
                     print(all_objects[key])
+                else:
+                    print("** no instance found **")
+            elif command == 'destroy':
+                # Extract ID from the command
+                id_str = parts[1].split('(')[1].strip(')').strip('"')
+                key = class_name + "." + id_str
+                all_objects = storage.all()
+                if key in all_objects:
+                    del all_objects[key]
+                    storage.save()
                 else:
                     print("** no instance found **")
             else:
