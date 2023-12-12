@@ -26,8 +26,8 @@ from models.user import User
 
 class FileStorage:
     """
-    This class serializes instances to a
-    JSON file and deserializes JSON file to instances.
+    This class serializes instances to a JSON file
+    and deserializes JSON file to instances.
     """
     def __init__(self):
         self.__file_path = "file.json"
