@@ -31,15 +31,16 @@ class BaseModel:
         """
         initializes a new instance of the BaseModel class.
         """
+        date_f = '%Y-%m-%dT%H:%M:%S.%f'
         if kwargs:
+            lst = ['created_at', 'updated_at']
             for key, value in kwargs.items():
-                if key != '__class__':
-                    if key in ['created_at', 'updated_at']:
-                        setattr(self, key,
-                                datetime.datetime
-                                .fromtimestamp(value, '%Y-%m-%dT%H:%M:%S.%f'))
-                    else:
-                        setattr(self, key, value)
+                if key in lst:
+                    self.created_at = datetime.strptime(kwargs[key], date_f)
+                elif "key" == "__class__":
+                    pass
+                else:
+                    setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
