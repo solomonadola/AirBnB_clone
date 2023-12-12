@@ -107,7 +107,8 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
     def do_update(self, arg):
-        """Update an instance based on the class name and id with a dictionary"""
+        """Update an instance based on the class
+        name and id with a dictionary"""
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -141,7 +142,6 @@ class HBNBCommand(cmd.Cmd):
                         # Update the attributes of the object
                         setattr(obj, key, value)
                     obj.save()
-
 
     def default(self, arg):
         """Default behavior for cmd module when input is invalid"""
