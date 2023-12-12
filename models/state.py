@@ -4,8 +4,7 @@ from models.base_model import BaseModel
 
 
 class State(BaseModel):
-    """State class."""
+    """State class that inherits from BaseModel."""
     def __init__(self, *args, **kwargs):
-        """Initialization of State instance."""
         super().__init__(*args, **kwargs)
         self.name = ""

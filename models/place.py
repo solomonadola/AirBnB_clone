@@ -5,9 +5,8 @@ from models.base_model import BaseModel
 
 
 class Place(BaseModel):
-    """Place class."""
+    """Place class that inherits from BaseModel."""
     def __init__(self, *args, **kwargs):
-        """Initialization of Place instance."""
         super().__init__(*args, **kwargs)
         self.city_id = ""
         self.user_id = ""

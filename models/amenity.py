@@ -5,8 +5,7 @@ from models.base_model import BaseModel
 
 
 class Amenity(BaseModel):
-    """Amenity class."""
+    """Amenity class that inherits from BaseModel."""
     def __init__(self, *args, **kwargs):
-        """Initialization of Amenity instance."""
         super().__init__(*args, **kwargs)
         self.name = ""
