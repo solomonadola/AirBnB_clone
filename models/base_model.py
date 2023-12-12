@@ -33,13 +33,11 @@ class BaseModel:
         """
         date_f = '%Y-%m-%dT%H:%M:%S.%f'
         if kwargs:
-            lst = ['created_at', 'updated_at']
             for key, value in kwargs.items():
-                if key in lst:
-                    self.created_at = datetime.strptime(kwargs[key], date_f)
-                elif "key" == "__class__":
-                    pass
-                else:
+                if key != '__class__':
+                    if key in ['created_at', 'updated_at']:
+                        value = datetime.\
+                            strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
