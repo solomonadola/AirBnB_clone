@@ -106,7 +106,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
     def do_update(self, arg):
-        """Update an instance based on the class name and id"""
+        """Update an instance based on the class name and id with a dictionary"""
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -115,18 +115,32 @@ class HBNBCommand(cmd.Cmd):
         elif len(args) < 2:
             print("** instance id missing **")
         elif len(args) < 3:
-            print("** attribute name missing **")
-        elif len(args) < 4:
-            print("** value missing **")
+            print("** dictionary missing **")
         else:
-            key = args[0] + "." + args[1]
+            class_name = args[0]
+            instance_id = args[1]
             all_objects = storage.all()
-            if key in all_objects:
-                obj = all_objects[key]
-                setattr(obj, args[2], args[3].strip('"'))
-                obj.save()
-            else:
+            key = class_name + "." + instance_id
+
+            if key not in all_objects:
                 print("** no instance found **")
+            else:
+                obj = all_objects[key]
+                # Convert the dictionary representation to a dictionary
+                try:
+                    update_dict = eval(args[2])
+                except Exception as e:
+                    print("** invalid dictionary format **")
+                    return
+
+                if not isinstance(update_dict, dict):
+                    print("** invalid dictionary format **")
+                else:
+                    for key, value in update_dict.items():
+                        # Update the attributes of the object
+                        setattr(obj, key, value)
+                    obj.save()
+
 
     def default(self, line):
         """Handle custom commands"""
