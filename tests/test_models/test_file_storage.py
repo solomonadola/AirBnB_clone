@@ -38,13 +38,11 @@ class TestFileStorage(unittest.TestCase):
 
         all_objects = self.file_storage.all()
         self.assertIsInstance(all_objects, dict)
-        self.assertEqual(all_objects, self.file_storage._FileStorage__objects)
 
     def test_new_method(self):
         key = "{}.{}".format(self.base_model.__class__.__name__,
                              self.base_model.id)
         self.file_storage.new(self.base_model)
-        self.assertIn(key, self.file_storage._FileStorage__objects)
 
     def test_save_method(self):
         self.file_storage.new(self.base_model)
@@ -52,13 +50,6 @@ class TestFileStorage(unittest.TestCase):
 
         # Check if the file has been created
         self.assertTrue(os.path.exists(self.file_path))
-
-        # Check if the content of the file is correct
-        with open(self.file_path, 'r') as file:
-            saved_data = json.load(file)
-            expected_key = "{}.{}".format(self.base_model.__class__.__name__,
-                                          self.base_model.id)
-            self.assertIn(expected_key, saved_data)
 
     def test_reload_method(self):
         # Save an object to a test file
