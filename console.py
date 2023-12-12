@@ -11,23 +11,9 @@ from models.user import User
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
-    def do_quit(self, line):
-        """
-        Quit command to exit the console.
-        """
-        return True
-
-    def do_EOF(self, line):
-        """
-        Handle EOF (Ctrl-D or Ctrl-Z) to exit the console.
-        """
-        print()  # Print a new line for better readability
-        return True
-
     def do_create(self, line):
         """
-        Creates a new instance of the specified class,
-        saves it (to the JSON file),
+        Creates a new instance of BaseModel, saves it (to the JSON file),
         and prints the id.
         """
         if not line:
@@ -95,8 +81,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             try:
                 class_name = args[0]
-                print([str(obj) for key, obj in
-                       instances.items() if class_name in key])
+                print([str(obj) for key, obj in instances.items() if class_name in key])
             except NameError:
                 print("** class doesn't exist **")
 
