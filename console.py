@@ -88,7 +88,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             class_name = args[0]
-            instances = [str(obj) for key, obj in all_objects.items() if class_name in key]
+            instances = [str(obj) for key, obj in all_objects.items()
+                         if class_name in key]
             print(instances)
 
     def do_update(self, arg):
@@ -113,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
                 obj.save()
             else:
                 print("** no instance found **")
-    
+
     def default(self, line):
         """Handle custom commands"""
         parts = line.split('.')
