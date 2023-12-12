@@ -88,8 +88,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             class_name = args[0]
-            print([str(obj) for key, obj in all_objects.items()
-                   if class_name in key])
+            instances = [str(obj) for key, obj in all_objects.items() if class_name in key]
+            print(instances)
 
     def do_update(self, arg):
         """Update an instance based on the class name and id"""
@@ -113,6 +113,16 @@ class HBNBCommand(cmd.Cmd):
                 obj.save()
             else:
                 print("** no instance found **")
+    
+    def default(self, line):
+        """Handle custom commands"""
+        parts = line.split('.')
+        if len(parts) == 2 and parts[1] == 'all()':
+            class_name = parts[0]
+            instances = [str(obj) for key, obj in storage.all().items() if class_name in key]
+            print(instances)
+        else:
+            super().default(line)
 
 
 if __name__ == '__main__':
