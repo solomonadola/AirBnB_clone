@@ -4,6 +4,11 @@
 import cmd
 import sys
 from models.base_model import BaseModel
+from models.city import City
+from models.state import State
+from models.review import Review
+from models.amenity import Amenity
+from models.place import Place
 from models import storage
 
 
@@ -11,7 +16,7 @@ class HBNBCommand(cmd.Cmd):
     """Command interpreter class"""
 
     prompt = "(hbnb) "
-    classes = ["BaseModel"]
+    classes = ["BaseModel", "City", "State", "Review", "Amenity", "Place"]
 
     def do_quit(self, arg):
         """Quit command to exit the program"""
@@ -27,13 +32,13 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """Create a new instance of BaseModel"""
+        """Create a new instance of a class"""
         if not arg:
             print("** class name missing **")
         elif arg not in self.classes:
             print("** class doesn't exist **")
         else:
-            new_instance = BaseModel()
+            new_instance = eval(arg)()
             new_instance.save()
             print(new_instance.id)
 
