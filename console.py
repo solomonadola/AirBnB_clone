@@ -5,7 +5,6 @@ Console module
 import cmd
 from models import storage
 from models.base_model import BaseModel
-from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
@@ -76,12 +75,13 @@ class HBNBCommand(cmd.Cmd):
         """
         args = line.split()
         instances = storage.all()
-        if not args:
+        if not args or args[0] not in storage.classes():
             print([str(obj) for obj in instances.values()])
         else:
             try:
                 class_name = args[0]
-                print([str(obj) for key, obj in instances.items() if class_name in key])
+                print([str(obj) for key, obj in instances.items()
+                       if class_name in key])
             except NameError:
                 print("** class doesn't exist **")
 
@@ -97,16 +97,43 @@ class HBNBCommand(cmd.Cmd):
         try:
             class_name = args[0]
             instance_id = args[1]
-            attr_name = args[2]
-            attr_value = args[3]
             key = "{}.{}".format(class_name, instance_id)
             instances = storage.all()
-            if key in instances:
-                instance = instances[key]
-                setattr(instance, attr_name, attr_value)
-                instance.save()
-            else:
+            if key not in instances:
                 print("** no instance found **")
+                return
+
+            instance = instances[key]
+            if len(args) < 3:
+                print("** attribute name missing **")
+                return
+
+            attr_name = args[2]
+            if len(args) < 4:
+                print("** value missing **")
+                return
+
+            attr_value_str = args[3]
+            attr_value = None
+
+            if '"' in attr_value_str:
+                attr_value = attr_value_str.strip('"')
+            else:
+                try:
+                    attr_value = int(attr_value_str)
+                except ValueError:
+                    try:
+                        attr_value = float(attr_value_str)
+                    except ValueError:
+                        pass
+
+            if attr_value is None:
+                print("** value missing **")
+                return
+
+            setattr(instance, attr_name, attr_value)
+            instance.save()
+
         except IndexError:
             print("** instance id missing **")
         except NameError:
