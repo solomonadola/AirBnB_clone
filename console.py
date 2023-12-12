@@ -42,23 +42,6 @@ class HBNBCommand(cmd.Cmd):
             new_instance.save()
             print(new_instance.id)
 
-    def do_show(self, arg):
-        """Show the string representation of an instance"""
-        args = arg.split()
-        if not args:
-            print("** class name missing **")
-        elif args[0] not in self.classes:
-            print("** class doesn't exist **")
-        elif len(args) < 2:
-            print("** instance id missing **")
-        else:
-            key = args[0] + "." + args[1]
-            all_objects = storage.all()
-            if key in all_objects:
-                print(all_objects[key])
-            else:
-                print("** no instance found **")
-
     def do_destroy(self, arg):
         """Destroy an instance based on the class name and id"""
         args = arg.split()
@@ -128,12 +111,29 @@ class HBNBCommand(cmd.Cmd):
                                   if class_name == obj.__class__.__name__)
             print(instances_count)
 
+    def do_show(self, arg):
+        """Show the string representation of an instance by ID"""
+        args = arg.split()
+        if not args:
+            print("** class name missing **")
+        elif args[0] not in self.classes:
+            print("** class doesn't exist **")
+        elif len(args) < 2:
+            print("** instance id missing **")
+        else:
+            key = args[0] + "." + args[1]
+            all_objects = storage.all()
+            if key in all_objects:
+                print(all_objects[key])
+            else:
+                print("** no instance found **")
+
     def default(self, line):
         """Handle custom commands"""
         parts = line.split('.')
         if len(parts) == 2:
             class_name = parts[0]
-            command = parts[1]
+            command = parts[1].split('(')[0]
             if command == 'count()':
                 instances_count = sum(1 for obj in storage.all().values()
                                       if class_name == obj.__class__.__name__)
@@ -142,6 +142,15 @@ class HBNBCommand(cmd.Cmd):
                 instances = [str(obj) for obj in storage.all().values()
                              if class_name == obj.__class__.__name__]
                 print(instances)
+            elif command == 'show':
+                # Extract ID from the command
+                id_str = parts[1].split('(')[1].strip(')').strip('"')
+                key = class_name + "." + id_str
+                all_objects = storage.all()
+                if key in all_objects:
+                    print(all_objects[key])
+                else:
+                    print("** no instance found **")
             else:
                 super().default(line)
         else:
