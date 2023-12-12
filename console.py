@@ -115,14 +115,35 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
+    def do_count(self, arg):
+        """Count the number of instances of a class"""
+        args = arg.split()
+        if not args:
+            print("** class name missing **")
+        elif args[0] not in self.classes:
+            print("** class doesn't exist **")
+        else:
+            class_name = args[0]
+            instances_count = sum(1 for obj in storage.all().values()
+                                  if class_name == obj.__class__.__name__)
+            print(instances_count)
+
     def default(self, line):
         """Handle custom commands"""
         parts = line.split('.')
-        if len(parts) == 2 and parts[1] == 'all()':
+        if len(parts) == 2:
             class_name = parts[0]
-            instances = [str(obj) for key, obj in storage.all().items()
-                         if class_name in key]
-            print(instances)
+            command = parts[1]
+            if command == 'count()':
+                instances_count = sum(1 for obj in storage.all().values()
+                                      if class_name == obj.__class__.__name__)
+                print(instances_count)
+            elif command == 'all()':
+                instances = [str(obj) for obj in storage.all().values()
+                             if class_name == obj.__class__.__name__]
+                print(instances)
+            else:
+                super().default(line)
         else:
             super().default(line)
 
