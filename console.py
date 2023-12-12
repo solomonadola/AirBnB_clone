@@ -7,6 +7,7 @@ import datetime
 
 
 class HBNBCommand(cmd.Cmd):
+    """ a class that contains all the commands """
     prompt = '(hbnb) '
     file = None
 
