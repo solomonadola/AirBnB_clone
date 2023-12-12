@@ -87,8 +87,9 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] not in self.classes:
             print("** class doesn't exist **")
         else:
-            print([str(all_objects[obj])
-                   for obj in all_objects if args[0] in obj])
+            class_name = args[0]
+            print([str(obj) for key, obj in all_objects.items()
+                   if class_name in key])
 
     def do_update(self, arg):
         """Update an instance based on the class name and id"""
