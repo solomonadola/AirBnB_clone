@@ -10,7 +10,6 @@ from models.review import Review
 from models.amenity import Amenity
 from models.place import Place
 from models import storage
-import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -107,8 +106,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
     def do_update(self, arg):
-        """Update an instance based on the class
-        name and id with a dictionary"""
+        """Update an instance based on the class name and id with a dictionary"""
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -143,26 +141,58 @@ class HBNBCommand(cmd.Cmd):
                         setattr(obj, key, value)
                     obj.save()
 
-    def default(self, arg):
-        """Default behavior for cmd module when input is invalid"""
-        argdict = {
-            "all": self.do_all,
-            "show": self.do_show,
-            "destroy": self.do_destroy,
-            "count": self.do_count,
-            "update": self.do_update
-        }
-        match = re.search(r"\.", arg)
-        if match is not None:
-            argl = [arg[:match.span()[0]], arg[match.span()[1]:]]
-            match = re.search(r"\((.*?)\)", argl[1])
-            if match is not None:
-                command = [argl[1][:match.span()[0]], match.group()[1:-1]]
-                if command[0] in argdict.keys():
-                    call = "{} {}".format(argl[0], command[1])
-                    return argdict[command[0]](call)
-        print("*** Unknown syntax: {}".format(arg))
-        return False
+
+    def default(self, line):
+        """Handle custom commands"""
+        parts = line.split('.')
+        if len(parts) == 2:
+            class_name = parts[0]
+            command = parts[1].split('(')[0]
+            if command == 'count()':
+                instances_count = sum(1 for obj in storage.all().values()
+                                      if class_name == obj.__class__.__name__)
+                print(instances_count)
+            elif command == 'all()':
+                instances = [str(obj) for obj in storage.all().values()
+                             if class_name == obj.__class__.__name__]
+                print(instances)
+            elif command == 'show':
+                # Extract ID from the command
+                id_str = parts[1].split('(')[1].strip(')').strip('"')
+                key = class_name + "." + id_str
+                all_objects = storage.all()
+                if key in all_objects:
+                    print(all_objects[key])
+                else:
+                    print("** no instance found **")
+            elif command == 'destroy':
+                # Extract ID from the command
+                id_str = parts[1].split('(')[1].strip(')').strip('"')
+                key = class_name + "." + id_str
+                all_objects = storage.all()
+                if key in all_objects:
+                    del all_objects[key]
+                    storage.save()
+                else:
+                    print("** no instance found **")
+            elif command == 'update':
+                id_str, attr_name, attr_value\
+                    = parts[1].split('(')[1].strip(')').split(', ')
+                id_str = id_str.strip('"')
+                attr_name = attr_name.strip('"')
+                attr_value = attr_value.strip('"')
+                key = class_name + "." + id_str
+                all_objects = storage.all()
+                if key in all_objects:
+                    obj = all_objects[key]
+                    setattr(obj, attr_name, attr_value)
+                    obj.save()
+                else:
+                    print("** no instance found **")
+            else:
+                super().default(line)
+        else:
+            super().default(line)
 
 
 if __name__ == '__main__':
