@@ -13,7 +13,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, line):
         """
-        Creates a new instance of BaseModel, saves it (to the JSON file),
+        Creates a new instance of the specified class,
+        saves it (to the JSON file),
         and prints the id.
         """
         if not line:
@@ -81,7 +82,8 @@ class HBNBCommand(cmd.Cmd):
         else:
             try:
                 class_name = args[0]
-                print([str(obj) for key, obj in instances.items() if class_name in key])
+                print([str(obj) for key, obj in
+                       instances.items()if class_name in key])
             except NameError:
                 print("** class doesn't exist **")
 
