@@ -6,10 +6,11 @@ from models.city import City
 
 
 class TestCity(unittest.TestCase):
-    def test_city_instance(self):
+
+    def test_attributes(self):
         city = City()
-        self.assertIsInstance(city, City)
-        self.assertIsInstance(city, base_model.BaseModel)
+        self.assertEqual(city.state_id, "")
+        self.assertEqual(city.name, "")
 
 
 if __name__ == '__main__':

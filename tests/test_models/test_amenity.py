@@ -7,10 +7,10 @@ from models.amenity import Amenity
 
 
 class TestAmenity(unittest.TestCase):
-    def test_amenity_instance(self):
+
+    def test_attributes(self):
         amenity = Amenity()
-        self.assertIsInstance(amenity, Amenity)
-        self.assertIsInstance(amenity, base_model.BaseModel)
+        self.assertEqual(amenity.name, "")
 
 
 if __name__ == '__main__':

@@ -7,10 +7,12 @@ from models.review import Review
 
 
 class TestReview(unittest.TestCase):
-    def test_review_instance(self):
+
+    def test_attributes(self):
         review = Review()
-        self.assertIsInstance(review, Review)
-        self.assertIsInstance(review, base_model.BaseModel)
+        self.assertEqual(review.place_id, "")
+        self.assertEqual(review.user_id, "")
+        self.assertEqual(review.text, "")
 
 
 if __name__ == '__main__':
