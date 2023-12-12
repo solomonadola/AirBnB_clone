@@ -21,7 +21,11 @@ Methods:
 
 import json
 from models.base_model import BaseModel
-from models.user import User
+from models.city import City
+from models.state import State
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class FileStorage:
@@ -41,7 +45,9 @@ class FileStorage:
         self.__objects[key] = obj
 
     def save(self):
-        obj_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
+        obj_dict = {}
+        for key, obj in self.__objects.items():
+            obj_dict[key] = obj.to_dict()
         with open(self.__file_path, 'w') as file:
             json.dump(obj_dict, file)
 
