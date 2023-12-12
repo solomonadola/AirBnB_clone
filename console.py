@@ -114,11 +114,27 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif len(args) < 2:
             print("** instance id missing **")
+        elif "{" in args[2] and "}" in args[-1]:
+            # Case for updating with a dictionary
+            key = args[0] + "." + args[1]
+            all_objects = storage.all()
+            if key in all_objects:
+                obj = all_objects[key]
+                try:
+                    data_dict = eval(" ".join(args[2:]))
+                    for k, v in data_dict.items():
+                        setattr(obj, k, v)
+                    obj.save()
+                except Exception as e:
+                    print("** invalid dictionary syntax **")
+            else:
+                print("** no instance found **")
         elif len(args) < 3:
             print("** attribute name missing **")
         elif len(args) < 4:
             print("** value missing **")
         else:
+            # Case for updating with separate attribute and value
             key = args[0] + "." + args[1]
             all_objects = storage.all()
             if key in all_objects:
@@ -136,11 +152,11 @@ class HBNBCommand(cmd.Cmd):
             command = parts[1].split('(')[0]
             if command == 'count()':
                 instances_count = sum(1 for obj in storage.all().values()
-                                      if class_name == obj.__class__.__name__)
+                                    if class_name == obj.__class__.__name__)
                 print(instances_count)
             elif command == 'all()':
                 instances = [str(obj) for obj in storage.all().values()
-                             if class_name == obj.__class__.__name__]
+                            if class_name == obj.__class__.__name__]
                 print(instances)
             elif command == 'show':
                 # Extract ID from the command
@@ -162,17 +178,24 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     print("** no instance found **")
             elif command == 'update':
-                id_str, attr_name, attr_value\
-                    = parts[1].split('(')[1].strip(')').split(', ')
-                id_str = id_str.strip('"')
-                attr_name = attr_name.strip('"')
-                attr_value = attr_value.strip('"')
+                # Extract ID, attribute name, and attribute value or dictionary from the command
+                id_str = parts[1].split('(')[1].strip(')').strip('"')
                 key = class_name + "." + id_str
                 all_objects = storage.all()
                 if key in all_objects:
                     obj = all_objects[key]
-                    setattr(obj, attr_name, attr_value)
-                    obj.save()
+                    if "{" in parts[1] and "}" in parts[-1]:
+                        try:
+                            data_dict = eval(" ".join(parts[1].split('(')[2:]))
+                            for k, v in data_dict.items():
+                                setattr(obj, k, v)
+                            obj.save()
+                        except Exception as e:
+                            print("** invalid dictionary syntax **")
+                    else:
+                        attr_name, attr_value = parts[1].split('(')[2].strip(')').split(', ')
+                        setattr(obj, attr_name.strip('"'), attr_value.strip('"'))
+                        obj.save()
                 else:
                     print("** no instance found **")
             else:
