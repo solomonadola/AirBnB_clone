@@ -57,29 +57,6 @@ class HBNBCommand(cmd.Cmd):
                          if class_name in obj]
             print(instances)
 
-    def do_update(self, arg):
-        """Update an instance based on the class name and id"""
-        args = arg.split()
-        if not args:
-            print("** class name missing **")
-        elif args[0] not in self.classes:
-            print("** class doesn't exist **")
-        elif len(args) < 2:
-            print("** instance id missing **")
-        elif len(args) < 3:
-            print("** attribute name missing **")
-        elif len(args) < 4:
-            print("** value missing **")
-        else:
-            key = args[0] + "." + args[1]
-            all_objects = storage.all()
-            if key in all_objects:
-                obj = all_objects[key]
-                setattr(obj, args[2], args[3].strip('"'))
-                obj.save()
-            else:
-                print("** no instance found **")
-
     def do_count(self, arg):
         """Count the number of instances of a class"""
         args = arg.split()
@@ -128,6 +105,29 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
+    def do_update(self, arg):
+        """Update an instance based on the class name and id"""
+        args = arg.split()
+        if not args:
+            print("** class name missing **")
+        elif args[0] not in self.classes:
+            print("** class doesn't exist **")
+        elif len(args) < 2:
+            print("** instance id missing **")
+        elif len(args) < 3:
+            print("** attribute name missing **")
+        elif len(args) < 4:
+            print("** value missing **")
+        else:
+            key = args[0] + "." + args[1]
+            all_objects = storage.all()
+            if key in all_objects:
+                obj = all_objects[key]
+                setattr(obj, args[2], args[3].strip('"'))
+                obj.save()
+            else:
+                print("** no instance found **")
+
     def default(self, line):
         """Handle custom commands"""
         parts = line.split('.')
@@ -159,6 +159,20 @@ class HBNBCommand(cmd.Cmd):
                 if key in all_objects:
                     del all_objects[key]
                     storage.save()
+                else:
+                    print("** no instance found **")
+            elif command == 'update':
+                id_str, attr_name, attr_value\
+                    = parts[1].split('(')[1].strip(')').split(', ')
+                id_str = id_str.strip('"')
+                attr_name = attr_name.strip('"')
+                attr_value = attr_value.strip('"')
+                key = class_name + "." + id_str
+                all_objects = storage.all()
+                if key in all_objects:
+                    obj = all_objects[key]
+                    setattr(obj, attr_name, attr_value)
+                    obj.save()
                 else:
                     print("** no instance found **")
             else:
