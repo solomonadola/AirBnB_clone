@@ -88,8 +88,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             class_name = args[0]
-            instances = [str(obj) for key, obj in all_objects.items()
-                         if class_name in key]
+            instances = [str(all_objects[obj]) for obj in all_objects
+                         if class_name in obj]
             print(instances)
 
     def do_update(self, arg):
