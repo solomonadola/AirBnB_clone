@@ -1,15 +1,15 @@
 #!/usr/bin/python3
 """ This module is a city test module"""
-
 import unittest
+from models import base_model
 from models.city import City
-from models.base_model import BaseModel
 
 
 class TestCity(unittest.TestCase):
     def test_city_instance(self):
         city = City()
-        self.assertIsInstance(city, BaseModel)
+        self.assertIsInstance(city, City)
+        self.assertIsInstance(city, base_model.BaseModel)
 
 
 if __name__ == '__main__':
