@@ -1,24 +1,25 @@
 #!/usr/bin/python3
-"""Console module for HBNB project."""
+""" Console module for HBNB project"""
+
 import cmd
 
 
 class HBNBCommand(cmd.Cmd):
-    """Command interpreter for HBNB project."""
+    """ HBNB command calss"""
 
-    prompt = "(hbnb) "
+    prompt = '(hbnb) '
 
-    def do_EOF(self, line):
-        """Exit the program."""
+    def do_quit(self, arg):
+        """Quit command to exit the program"""
         return True
 
-    def do_quit(self, line):
-        """Quit the program."""
+    def do_EOF(self, arg):
+        """Exit the program using EOF (Ctrl+D)"""
         return True
 
-    def help_quit(self):
-        """Print help for quit command."""
-        print("Quit command to exit the program")
+    def emptyline(self):
+        """Do nothing for empty line"""
+        pass
 
 
 if __name__ == '__main__':
