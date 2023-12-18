@@ -1,0 +1,20 @@
+.popover{
+    display: none;
+    position: absolute;
+    top: 68px;
+    right: 0;
+    background: #FAFAFA;
+    width: 112%;
+    border: solid 1px #DDDDDD;
+    border-radius: 4px;
+}
+.popover ul{
+    list-style-type: none;
+
+}
+.locations:hover  .popover{
+    display: block;
+}
+.amenities:hover  .popover{
+    display: block;
+}
